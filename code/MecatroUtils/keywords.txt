@@ -1,0 +1,11 @@
+
+#######################################
+# Syntax Coloring Map
+#######################################
+
+configureArduino	 KEYWORD2
+controlLoop	         KEYWORD2
+setMotorDutyCycle	 KEYWORD2
+run             	 KEYWORD2
+
+mecatro          LITERAL1
