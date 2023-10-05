@@ -111,8 +111,16 @@ namespace mecatro{
         // Now we actually activate the time-based interrupt.
         // TIMSK2 = (1 << OCIE2A);
 
-        // Finially, we enable all interrupts.
+        // Finally, we enable all interrupts.
         sei();
+
+      // I2C configuration  
+      // Set I2C clock speed to 400kHz (fast mode)
+      // Note: this has to be done after starting the encoder, because their code reset the clock to 100kHz.
+      Wire.setClock(400000);
+      // Set I2C master timeout to 500us - this line is very important, otherwise the Arduino can enter into an endless loop
+      // when trying - and failing - to talk to the IMU.
+      Wire.setWireTimeout(500, true);
     }
 
     void setMotorDutyCycle(float const& leftMotorDC, float const& rightMotorDC)
