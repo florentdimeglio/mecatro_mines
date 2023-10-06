@@ -1,8 +1,8 @@
 %Duration of the experiment
-Tmax = 10;
+Tmax = 3;
 
 %Serial port name
-port_name = "/dev/cu.usbserial-110";
+port_name = "/dev/cu.usbserial-14210";
 
 %CONTROL_LOOP_PERIOD constant in the Arduino sketch
 dt_arduino = 5e-3;
@@ -10,8 +10,11 @@ dt_arduino = 5e-3;
 %Target folder
 target_folder = './';
 
+%Baudrate
+baudrate = 1000000;
+
 [log_time, data_values, line_idx] = ...
-    get_data_from_robot(port_name, Tmax,target_folder);
+    get_data_from_robot(port_name, Tmax,baudrate);
 
 %Display logged variable names
 disp(data_values.keys)  

@@ -4,6 +4,7 @@
 
 #include <Arduino.h>
 #include "MecatroUtils.h"
+#include "Wire.h"
 
 // Telemetry-related variables
 #define MAX_TELEMETRY_VARIABLES 100
@@ -114,7 +115,7 @@ namespace mecatro{
         // Finally, we enable all interrupts.
         sei();
 
-      // I2C configuration  
+      // I2C configuration
       // Set I2C clock speed to 400kHz (fast mode)
       // Note: this has to be done after starting the encoder, because their code reset the clock to 100kHz.
       Wire.setClock(400000);

@@ -7,11 +7,15 @@
 // Include the IMU driver
 #include "ICM_20948.h"
 
+#include "SparkFun_I2C_Mux_Arduino_Library.h"
+
+
 // Define the control loop period, in ms.
 #define CONTROL_LOOP_PERIOD 5
 
 // Note that no multiplexer is used here: the IMU must be plugged into the I2C port of the Arduino directly.
 ICM20948 imu;
+QWIICMUX multiplexer;
 
 void setup()
 {
@@ -22,7 +26,12 @@ void setup()
   unsigned int const nVariables = 6;
   String variableNames[nVariables] = {"accelX", "accelY", "accelZ", "gyroX", "gyroY", "gyroZ"};
   mecatro::initTelemetry(nVariables, variableNames);
+  
+  Wire.begin();
 
+
+  multiplexer.begin();
+  multiplexer.setPort(4);
   if (!imu.init())
   {
       Serial.println("Error communicating with IMU. Check wiring");
@@ -50,7 +59,7 @@ void mecatro::controlLoop()
   IMUData const imuData = imu.read();
   // On very rare occasion, the IMU reading might fail. It's best to take that into account
   // to avoid unwanted control behavior
-  if (!imuData.isValid)
+  if (imuData.isValid)
   {
     mecatro::log(0, imuData.accelX);
     mecatro::log(1, imuData.accelY);
