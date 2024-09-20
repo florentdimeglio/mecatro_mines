@@ -1,12 +1,12 @@
-# PI MECATRO 2023 Mines paris PSL
+# Projets mécatro 2023 Ecole des Mines 
 
-Ce repo continent divers ressources pour le projet, à savoir : 
+Ce repo continent divers ressources pour les projets de mécatronique de l'école, à savoir:
 
- - Un fichier getStarted, qui contient des instructions pour se familiariser avec les composants électroniques, l'éditeur de code Arduino, effectuer les branchements de bases, etc.
- - Un fichier choix_composants détaillant et expliquant les raisons techniques ayant mené au choix des composants dont vous disposez.
+ - car: une simple base roulante pour prototyper l'asservissement
+ - segway: un pendule inverse à stabilier
+ - line_follower: une base roulante avec un capteur de suivi de ligne, visant à effectuer un parcours le plus rapidement possible.
 
- - Un dossier *code*, destiné à contenir les fichiers de code Arduino. Il contient notamment la bibliothèque *MecatroUtils*, base de tous les projets. Celle-ci inclut notamment des exemples pour commencer à coder.
+Le dossier *CAO* contient les maquettes 3D des projets, ainsi que les schémas de cablage.
 
- - Un dossier *mecatro_telemetry*, qui contient les fichiers Matlab utilisés pour recevoir des données depuis la carte Arduino via un port série. 
-
-
+Le dossier *code* contient la bibliothèque *MecatroUtils*, base de tous les projets à distribuer aux élèves, ainsi que des codes plus
+aboutis ("correction") pour chaque projet.

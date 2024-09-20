@@ -1,20 +1,27 @@
-%Duration of the experiment
-Tmax = 3;
+%WiFi settings
+IP = '192.168.4.1';
+PORT_NUMBER = 80;
 
-%Serial port name
-port_name = "/dev/cu.usbserial-14210";
+%USB settings
+port_name = '/dev/cu.usbmodemF412FA70B6442';
+baudrate = 230400;
 
-%CONTROL_LOOP_PERIOD constant in the Arduino sketch
-dt_arduino = 5e-3;
+%Recording time
+Tmax = 10;
 
-%Target folder
-target_folder = './';
+%Communication method
+method = 'WiFi';
 
-%Baudrate
-baudrate = 1000000;
+%Gains
+K = [-Kp -Kth -Kxi -Kw K_mov'];
 
-[log_time, data_values, line_idx] = ...
-    get_data_from_robot(port_name, Tmax,baudrate);
+if strcmp(method,'WiFi')
+    [log_time, data_values, line_idx] = get_data_WiFi(IP, PORT_NUMBER, Tmax, K);
+elseif strcmp(method,'USB')
+    [log_time, data_values, line_idx] = get_data_USB(port_name,Tmax,baudrate, K);
+else
+    print('Use a valid connection method')
+end
 
 %Display logged variable names
 disp(data_values.keys)  
@@ -31,11 +38,5 @@ end
 hold off;
 legend('Location', 'best');
 grid on;
-
-GAINS = [1.5,   % MAHONY_TAU
-         8.0,   % KP
-         0.05,  % KD
-         0.05,  % KP_PHI
-         0.015];% KD_PHI
 
 

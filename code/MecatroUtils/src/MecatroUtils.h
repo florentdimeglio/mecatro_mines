@@ -23,6 +23,17 @@ namespace mecatro{
     /// @param[in] controlPeriodMs Control loop period, in ms. Do not use a value above 16ms as this will lead to unexpected results.
     void configureArduino(unsigned char const controlPeriodMs = 5);
 
+    /// @brief Wait for gains comming from master over WiFi.
+    ///
+    /// @details "Gains" is an array of nGains float32. This function blocks until a valid
+    ///          message has been recieved.
+    ///          A gain message is of the form [0xFF <float0> <float1> ... <floatN> <checksum>],
+    ///          where checksum = 255 - sum(float bytes).
+    ///
+    /// @param[in] nGains Number of gains needed.
+    /// @param[out] gainsArray preallocated array to recieve the gains.
+    void recieveGains(unsigned char const nGains, float *gainsArray);
+
     /// @brief Set the duty cycle value of both motor drivers.
     /// @details The motors of the robot are controlled using H-bridges. The control input is
     ///          thus the duty cycle i.e. the percentage of time that the transistors are on.
@@ -32,24 +43,28 @@ namespace mecatro{
     /// @param[in] leftMotorDC Duty cycle for left motor, between -1 (full reverse) and 1 (full foward).
     void setMotorDutyCycle(float const& leftMotorDC, float const& rightMotorDC);
 
-
     /// @brief Initialize telemetry
     /// @details Telemetry consists of n variables, n being constant. This function both defines n,
-    ///          sets the names of the variable, and sends them through serial. 
-    ///          This function must be called once during init to enable the telemetry.
+    ///          sets the names of the variable, and sends them to the telemetry client, connected through WiFi.
+    ///          Note that this function blocks until a client is indeed connected through WiFi, and has sent
+    //           the letter 's' to start the process.
     /// @note Telemetry is internally limitted to 100 variables.
     /// @note It takes about 200us at 230400bps to send a single variable.
     ///
-    /// @param variableNames String array, the name of the variables.
+    /// @param wifiSSID SSID, aka name, of the WiFi network created by the Arduino
+    /// @param wifiPassword Password of the WiFi network
     /// @param numberOfVariables Number of variables, i.e. length of variableNames
-    void initTelemetry(unsigned int const numberOfVariables, String *variableNames);
+    /// @param variableNames String array, the name of the variables.
+    void initTelemetry(char* const wifiSSID, char* const wifiPassword, unsigned int const numberOfVariables, String* variableNames, unsigned char const controlPeriodMs);
 
     /// @brief Log a variable for post-processing.
     /// @details The maximum length for a variable name is 6 characters, exceeding values will be cropped.
     ///          When performing telemetry, you should not use the serial port for anything else to avoid
     ///          messing up the Matlab script.
-    /// @param[in] variableName Name of the variable. 
+    /// @param[in] variableName Name of the variable.
     /// @param[in] variableValue Value of the variable
+    /// @param[in] controlPeriodMs Control loop period, in ms. Do not use a value above 16ms as this will lead to unexpected results.
+    /// @param[in] controlPeriodMs Control loop period, in ms. Do not use a value above 16ms as this will lead to unexpected results.
     void log(unsigned int const variableId, float const variableValue);
 
     /// @brief Actually execute the code - to be called in the loop method

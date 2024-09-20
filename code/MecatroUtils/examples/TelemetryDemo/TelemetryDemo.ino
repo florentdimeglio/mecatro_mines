@@ -4,12 +4,10 @@
 
    This is done through the log function of MecatroUtils, that will send the data. A master
    script in Matlab will then listen to this data and store it in a nice table.
-   
+
    mecatro::log takes two arguments: the name of the variable (max 20 characters) and its value.
 
    As example, we here output the value of sin and cos with a period of 2 pi.
-
-   NOTE: when performing telemetry, you should NOT print anything else than this telemetry, otherwise the Matlab script might crash.
 */
 
 // Include the current library
@@ -18,21 +16,21 @@
 // Define the control loop period, in ms.
 #define CONTROL_LOOP_PERIOD 5
 
+// Define the name and password of the wifi network
+#define WIFI_SSID "ArduinoMecatro"
+#define WIFI_PASSWRD "password1234"
 
 void setup()
 {
   // Setup serial communication with the PC - for debugging and logging.
-  // 230400 is the fastest speed for bluetooth ; if using USB, you can go up to 
-  // 1000000.
-  Serial.begin(230400);
+  Serial.begin(1000000);
 
+  // Configure motor control and feedback loop call.
+  mecatro::configureArduino(CONTROL_LOOP_PERIOD);
   // Initialize telemetry
   unsigned int const nVariables = 2;
   String variableNames[nVariables] = {"sin" , "cos"};
-  mecatro::initTelemetry(nVariables, variableNames);
-  
-  // Configure motor control and feedback loop call.
-  mecatro::configureArduino(CONTROL_LOOP_PERIOD);
+  mecatro::initTelemetry(WIFI_SSID, WIFI_PASSWRD, nVariables, variableNames, CONTROL_LOOP_PERIOD);
 }
 
 void loop()

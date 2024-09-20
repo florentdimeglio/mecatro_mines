@@ -1,5 +1,5 @@
 ---
-title: Choix des composants pour les projets Mécatro 2023
+title: Choix des composants pour les projets Mécatro 2023 -- updaté 2024
 author: Matthieu Vigne
 geometry: margin=2.5cm
 output: pdf_document
@@ -22,15 +22,16 @@ Le seul inconvénient que je vois à l'utilisation d'une Arduino est un debug pl
 
 \begin{wrapfigure}{R}{0.5\textwidth}
   \begin{center}
-    \includegraphics[width=0.48\textwidth]{Figures/redboard.png}
+    \includegraphics[width=0.48\textwidth]{Figures/UnoR4.png}
   \end{center}
-  \caption{\href{https://www.sparkfun.com/products/15123}{Sparkfun Redboard QWIIC}}
+  \caption{\href{https://www.sparkfun.com/products/15109}{Arduino Uno R4 WiFi}}
 \end{wrapfigure}
 
-Concrètement, c'est un clone d'Arduino que je propose d'utiliser, afin de répondre à la problématique de connection simple des capteurs, ne nécessitant pas un cablage sur les GPIOs. Pour cela, l'idée est d'utiliser des capteurs communiquant par bus I2C: un protocole de communication série très simple, quoi que peu performant, ne nécessitant que deux fils (données et horloge). Sur un bus I2C, un unique maître (l'Arduino) communique avec N esclaves, chacun disposant d'une adresse unique pour l'identifier: ainsi, de nombreux capteurs peuvent être branchées en série, et facilement rajoutés au cours de l'évolution du projet.
+Concrètement, c'est un clone d'Arduino que je propose d'utiliser, afin de répondre à la problématique de connection simple des capteurs, ne nécessitant pas un cablage sur les GPIOs. Pour cela, l'idée est d'utiliser des capteurs communiquant par bus I2C: un protocole de communication série très simple, quoi que peu performant, ne nécessitant que deux fils (données et horloge). Sur un bus I2C, un unique maître (l'Arduino) communique avec N esclaves, chacun disposant d'une adresse unique pour l'identifier: ainsi, de nombreux capteurs peuvent être branchées en série, et facilement rajoutés au cours de l'évolution du projet. 
 
 Afin de faciliter le branchement des composants I2C, plusieurs constructeurs de périphériques Arduino ont proposé un système de connection plug-and-play. Ici, je propose d'utiliser comme carte microcontroleur la [Sparkfun Redboard QWIIC](https://www.sparkfun.com/products/15123), un clone d'Arduino Uno directement équipé d'un port *QWIIC*: un port I2C utilisant un connecteur JST. Ceci permet de brancher facilement les cartes *QWIIC* fabriquées par Sparkfun. Par ailleurs, le même système a été développé par Adafruit, qui le nomme *Stemma QT*: il s'agit du même connecteur, les deux sont directement compatible. Enfin, d'autres cartes peuvent être trouvés chez Seedstudio, sous le nom de *Grove* - à noter que le connecteur est différent et nécessite un [cable d'inferface](https://www.sparkfun.com/products/15109)
 
+**Update 2024 : on passe cette année à une [Arduino Uno R4 WiFi](https://www.sparkfun.com/products/15109), pour pouvoir faire de la télémétrie sans câble. Elle possède toujours le même connecteur QWIIC, mais désormais deux micro-processeurs : un RA4M1 chargé de faire les calculs, et un ESP32-S3 pour la communication WiFi. Les deux processeurs communiquent via un port série avec un protocle UART, dont la fréquence est a priori fixée par Arduino. Afin de changer cette fréquence, nous avons écrit un nouveau firmware, qui doit être flashé sur chaque carte avant utilisation (normalement toutes les cartes ont été flashées avant le début du projet).**
 
 Une autre différence est à mentionner: les niveaux de tension utilisées. Arduino fonctionne classiquement sur un niveau 5V, mais de nombreux composants modernes, ainsi que les processeurs style Raspberry Pi, fonctionnent de 3.3V. Un grand nombre de capteurs sont compatibles avec les deux niveaux de tension, mais ce n'est pas le cas de tous, et c'est un point qu'il convient de vérifier: un composant 5V opéré en 3.3V ne fonctionnera pas, tandis qu'un composant 3.3V, s'il est branché en 5V, va tout simplement griller ! En pratique, la carte Sparkfun Redboard peut opérer en 3.3V ou 5V au niveau de ses GPIO - par contre, l'interface I2C QWIIC est **toujours** en 3.3V. A l'inverse, le système Grove était à l'origine prévu pour des composants 5V, même si bon nombre de composants sont compatibles avec les deux niveaux. C'est un point à vérifier pour chaque composant ; en cas de besoin, de convertisseurs de niveau logique [comme celui-là](https://www.sparkfun.com/products/17238) existent bien entendu.
 
@@ -80,11 +81,7 @@ Le dimensionnement pour le projet du pendule inverse est plus difficile à réal
 De nombreux fabricants de petits motoréducteurs existent: ceux que je connais le plus sont Pololu, ServoCity, MFA ; bon nombre sont distribués sur Gotronic ou Robotshop, qui sont des bons endroits où commencer à chercher.
 
 
-De facon assez arbitraire, je propose de commencer par la gamme de [moteur 37mm de Pololu](https://www.pololu.com/category/116/37d-metal-gearmotors): il s'agit du même moteur monté sur un réducteur à engrenages droits. Très peu cher, mon expérience reste celle d'un randement assez moyen - moins bon que ce que j'ai pu trouver chez des moteurs avec train épicycloidal de Servocity par exemple - mais, je pense, suffisant pour réaliser ces projets. Plus précisemment, je propose de prendre
-
- - le [4742](https://www.pololu.com/product/4742) avec un rapport de réduction de 30 pour la voiture: 330rpm a vide, 280rpm, 1.8kgm.com @ max efficiency
-
- - le [4743](https://www.pololu.com/product/4743) avec un rapport de réduction de 50 pour le pendule inverse:, 100 rpm, 10kg.cm @ max power
+De facon assez arbitraire, je propose de commencer par la gamme de [moteur 37mm de Pololu](https://www.pololu.com/category/116/37d-metal-gearmotors): il s'agit du même moteur monté sur un réducteur à engrenages droits. Très peu cher, mon expérience reste celle d'un randement assez moyen - moins bon que ce que j'ai pu trouver chez des moteurs avec train épicycloidal de Servocity par exemple - mais, je pense, suffisant pour réaliser ces projets. Plus précisemment, je propose de prendre le [4743](https://www.pololu.com/product/4743) avec un rapport de réduction de 50 pour le pendule inverse:, 100 rpm, 10kg.cm @ max power
 
 
 ## Controleur de moteur
@@ -130,12 +127,6 @@ Pour ces raisons, je privilégie le choix d'un codeur externe, à monter sur l'a
 
 Ce codeur nécessite un aimant polarisé radialement, fixé sur l'axe moteur. La fixation peut se faire à l'aide du même moyeu que pour la roue. Ces aimants sont très peu onéreux, quoi que difficile à trouver par un revendeur européen. Je propose le site Néerlandais [magnetenspecialist](https://www.magnetenspecialist.nl/fr/magasin/aimants-a-disque/disque-magnetique-6-x-25-mm-magnetise-diametralement/) pour des aimants de 6x2.5mm à environ 0.50€ l'aimant.
 
-
-# Alimentation
-
-TODO: batterie NiMH ou LiPo ?
-
-
 # Capteurs
 
 Enfin, il reste à choisir les capteurs spécifiques aux taches de chaque robot - les codeurs, commun aux deux robots, ont déjà été évoqués.
@@ -145,14 +136,16 @@ Enfin, il reste à choisir les capteurs spécifiques aux taches de chaque robot 
 
 Le pendule inverse doit disposer d'une IMU pour sa stabilisation. Plusieurs versions sont proposés par Sparkfun - le travail à 3.3V permettant un large choix de composant. Une seule de ces options cependant est équipé d'un magnétomètre 3 axes - en plus du gyro et accéléromètre 3 axes. Il s'agit de l'[ICM-20948](https://www.sparkfun.com/products/15335). Bien que ce capteur ne soit pas absoluement nécessaire, il peut s'agir d'un plus appréciable - typiquement pour expérimenter de l'estimation et du controle de lacet. L'IMU ne présente par ailleurs pas d'inconvénient majeurs: elle présente un niveau de défauts et de bruit un peu supérieur à la gamme LSM6D d'ST, une autre alternative, mais cette dernière n'a pas de gyroscope - et je ne pense pas que la différence soit très significative.
 
+**Update 2024: on passe à la [BMI-270](https://www.sparkfun.com/products/22397) de chez Bosch, toujours sur une board Sparkfun, suite à de nombreux problèmes en 2023 : biais d'accéléro et de gyro parfois gigantesques, capteurs qui renvoient une constante jusqu'au reboot... Plus de magnéto, de toutes façons inutilisé l'année dernière, mais, on l'espère, des mesures de meilleure qualité.**
+
 
 ## Voiture: suivi de ligne
 
 \begin{wrapfigure}{R}{0.3\textwidth}
   \begin{center}
-    \includegraphics[width=0.28\textwidth]{Figures/imu.png}
+    \includegraphics[width=0.28\textwidth]{Figures/BMI.png}
   \end{center}
-  \caption{\href{https://www.sparkfun.com/products/15335}{IMU ICM-20948}}
+  \caption{\href{https://www.sparkfun.com/products/22397}{IMU BMI-270}}
 \end{wrapfigure}
 
 Pour la voiture, il s'agit d'opérer un suivi de ligne, à l'aide de phototransistors et de diodes pour l'éclairer. Bien qu'en théorie un seul capteur soit nécessaire, le fait de disposer de plusieurs capteurs en ligne permet une information plus riche - et offre plus d'options de controle de trajectoire.
@@ -174,17 +167,20 @@ Au total, on obtient un temps de communication de 700us. Il s'agit ici d'un calc
 
 # Bilan
 
-La Figure \ref{fCablage} résume le fonctionnement général et l'inter-connection des éléments du robot. Le tabeau en Figure \ref{fBOM} quand à lui, résume les pièces à commander pour chaque robot, ainsi que le revendeur et le prix associé. J'arrive actuellement autour de 380€ par projet - en ajoutant la quncailleries et les pièces d'interface nécessaires à droite à gauche, l'ensemble devrait tenir dans l'enveloppe des 500€.
+La Figure \ref{fCablage} résume le fonctionnement général et l'inter-connection des éléments du robot **(schéma non à jour 2024)**. 
+<!-- Le tabeau en Figure \ref{fBOM} quand à lui, résume les pièces à commander pour chaque robot. -->
 
+<!-- , ainsi que le revendeur et le prix associé. J'arrive actuellement autour de 380€ par projet - en ajoutant la quncailleries et les pièces d'interface nécessaires à droite à gauche, l'ensemble devrait tenir dans l'enveloppe des 500€. -->
+<!-- 
 \begin{figure}[h]
   \includegraphics[width=\textwidth]{bom.pdf}
   \caption{Liste des pièces à commander}
   \label{fBOM}
-\end{figure}
+\end{figure} -->
 
 
 \begin{figure}[h]
-  \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{achitecture_elec.pdf}
+  \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{Figures/architecture_elec.pdf}
   \caption{Plan de cablage général}
   \label{fCablage}
 \end{figure}
