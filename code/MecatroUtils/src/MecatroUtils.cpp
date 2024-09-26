@@ -58,14 +58,14 @@ namespace mecatro{
         // Now we configure the PWM, according to FIgure 22.30.
         R_GPT7->GTCR = 0; // Saw-wave PWM, no prescaller
         R_GPT7->GTUDDTYC = 0b01; // Up-counting
-        R_GPT7->GTPR = 4800; // 10kHz frequency (MCU at 48MHz)
+        R_GPT7->GTPR = 2399; // 20kHz frequency (MCU at 48MHz)
         R_GPT7->GTCNT = 0; // Reset counter
         R_GPT7->GTIOR = 0b100011001 << 16; // Signal form: high before compare match.
         R_GPT7->GTCCR[1] = 0; // Make sure the motor starts off
 
         R_GPT2->GTCR = 0; // Saw-wave PWM, no prescaller
         R_GPT2->GTUDDTYC = 0b01; // Up-counting
-        R_GPT2->GTPR = 4800; // 10kHz frequency (MCU at 48MHz)
+        R_GPT2->GTPR = 2399; // 20kHz frequency (MCU at 48MHz)
         R_GPT2->GTCNT = 0; // Reset counter
         R_GPT2->GTIOR = 0b100011001; // Signal form: high before compare match.
         R_GPT2->GTCCR[0] = 0; // Make sure the motor starts off
@@ -102,7 +102,7 @@ namespace mecatro{
         }
 
         // Timer interrupt
-        targetIter = 10 * controlPeriodMs;
+        targetIter = 20 * controlPeriodMs;
 
         __enable_irq();
 
