@@ -1,3 +1,6 @@
+
+
+
 %WiFi settings
 IP = '192.168.4.1';
 PORT_NUMBER = 80;
@@ -13,7 +16,7 @@ Tmax = 10;
 method = 'WiFi';
 
 %Gains
-K = [-Kp -Kth -Kxi -Kw K_mov'];
+K = [];
 
 if strcmp(method,'WiFi')
     [log_time, data_values, line_idx] = get_data_WiFi(IP, PORT_NUMBER, Tmax, K);

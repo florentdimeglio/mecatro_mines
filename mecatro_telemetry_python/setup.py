@@ -10,10 +10,10 @@ setup(
     packages=find_namespace_packages("src"),
     package_dir={"": "src"},
     install_requires=[
-        "matplotlib",
-        "pyserial"
+        "pyserial",
+        "tqdm"
     ],
-    entry_points={"console_scripts": ["mecatro_telemetry = mecatro_telemetry.gui:main"]},
+    entry_points={"console_scripts": ["mecatro_telemetry = mecatro_telemetry.main:main"]},
     include_package_data=True,
     zip_safe=False,
 )
