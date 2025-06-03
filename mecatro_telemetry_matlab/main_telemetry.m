@@ -1,3 +1,6 @@
+
+
+
 %WiFi settings
 IP = '192.168.4.1';
 PORT_NUMBER = 80;
